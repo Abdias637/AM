@@ -1,0 +1,17 @@
+{
+  "name": "amq-trofeos",
+  "version": "1.0.0",
+  "description": "Sitio web de Artes Metálicas de Querétaro",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

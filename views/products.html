@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMQ - Productos</title>
+    <meta name="description" content="Catálogo de trofeos, medallas y placas artesanales de alta calidad en Querétaro">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/products.css">    <link rel="icon" type="image/x-icon" href="/img/logo.png">
+    <script>
+        // Variables globales
+        let currentCategory = 'all';
+        let allProducts = [];
+        let isLoading = false;
+        
+        // Función mejorada para cargar productos con caché
+        async function loadProducts(category = 'all') {
+            const container = document.getElementById('productsContainer');
+            if (!container || isLoading) return;
+            
+            currentCategory = category;
+            isLoading = true;
+            
+            try {
+                let products = [];
+                
+                // Si ya tenemos todos los productos, filtrar localmente
+                if (allProducts.length > 0 && category !== 'all') {
+                    products = allProducts.filter(p => p.category === category);
+                } else {
+                    const url = category === 'all' ? '/api/products' : `/api/products?category=${category}`;
+                    const response = await fetch(url);
+                    products = await response.json();
+                    
+                    if (category === 'all') {
+                        allProducts = products;
+                    }
+                }
+                
+                if (products.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-products">
+                            <div class="no-products-icon">🔍</div>
+                            <h3>No hay productos en esta categoría</h3>
+                            <p>Prueba con otra categoría o contáctanos para un diseño personalizado.</p>
+                            <a href="/products" class="btn btn-primary">Ver Todos los Productos</a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = products.map(product => `
+                    <div class="product-card" id="product-${product.id}">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-info">
+                            <div class="product-category">${product.category === 'trofeos' ? '🏆 Trofeo' : 
+                                                           product.category === 'medallas' ? '🥇 Medalla' : '📜 Placa'}</div>
+                            <h3 class="product-title">${product.name}</h3>
+                            <p class="product-description">${product.description}</p>
+                            
+                            <div class="product-features">
+                                ${product.features ? product.features.map(feature => `
+                                    <span class="product-feature">✓ ${feature}</span>
+                                `).join('') : ''}
+                            </div>
+                            
+                            <div class="product-price">${product.price}</div>
+                            
+                            <div class="product-actions">
+                                <button class="btn btn-primary" 
+                                        onclick="window.location.href='/contact?product=${encodeURIComponent(product.name)}'">
+                                    Cotizar
+                                </button>
+                                <button class="btn btn-secondary" 
+                                        onclick="openWhatsApp('${encodeURIComponent(product.name)}')">
+                                    WhatsApp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = '<p class="error">Error al cargar los productos</p>';
+            } finally {
+                isLoading = false;
+            }
+        }
+        
+        // Funciones auxiliares
+        function openWhatsApp(productName) {
+            const message = `Hola, me interesa el producto: ${productName}. ¿Podrían darme más información?`;
+            window.open(`https://wa.me/525664099645?text=${encodeURIComponent(message)}`, '_blank');
+        }
+        
+        // Función para buscar productos
+        function searchProducts(query) {
+            const container = document.getElementById('productsContainer');
+            if (!query.trim()) {
+                loadProducts(currentCategory);
+                return;
+            }
+            
+            const filtered = allProducts.filter(product => 
+                product.name.toLowerCase().includes(query.toLowerCase()) ||
+                product.description.toLowerCase().includes(query.toLowerCase()) ||
+                product.category.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="no-products">
+                        <div class="no-products-icon">🔍</div>
+                        <h3>No se encontraron productos</h3>
+                        <p>No hay productos que coincidan con "${query}"</p>
+                        <button class="btn btn-primary" onclick="loadProducts('all')">Ver Todos</button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = filtered.map(product => `
+                    <div class="product-card" id="product-${product.id}">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-info">
+                            <div class="product-category">${product.category === 'trofeos' ? '🏆 Trofeo' : 
+                                                           product.category === 'medallas' ? '🥇 Medalla' : '📜 Placa'}</div>
+                            <h3 class="product-title">${product.name}</h3>
+                            <p class="product-description">${product.description}</p>
+                            
+                            <div class="product-features">
+                                ${product.features ? product.features.map(feature => `
+                                    <span class="product-feature">✓ ${feature}</span>
+                                `).join('') : ''}
+                            </div>
+                            
+                            <div class="product-price">${product.price}</div>
+                            
+                            <div class="product-actions">
+                                <button class="btn btn-primary" 
+                                        onclick="window.location.href='/contact?product=${encodeURIComponent(product.name)}'">
+                                    Cotizar
+                                </button>
+                                <button class="btn btn-secondary" 
+                                        onclick="openWhatsApp('${encodeURIComponent(product.name)}')">
+                                    WhatsApp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category') || 'all';
+            
+            // Agregar buscador
+            const categoryFilter = document.querySelector('.category-filter');
+            if (categoryFilter) {
+                const searchHtml = `
+                    <div class="products-search">
+                        <input type="text" 
+                               placeholder="Buscar productos..." 
+                               id="productSearch"
+                               onkeyup="searchProducts(this.value)">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                `;
+                categoryFilter.insertAdjacentHTML('afterend', searchHtml);
+            }
+            
+            // Configurar botones de categoría
+            setupCategoryButtons(category);
+            
+            // Cargar productos
+            loadProducts(category);
+        });
+        
+        // Configurar botones de categoría
+        function setupCategoryButtons(initialCategory) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                const category = btn.getAttribute('data-category');
+                
+                if (category === initialCategory) {
+                    btn.classList.add('active');
+                }
+                
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (this.classList.contains('active')) return;
+                    
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    const newUrl = category === 'all' 
+                        ? '/products' 
+                        : `/products?category=${category}`;
+                    window.history.pushState({ category }, '', newUrl);
+                    
+                    loadProducts(category);
+                });
+            });
+            
+            window.addEventListener('popstate', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const category = urlParams.get('category') || 'all';
+                loadProducts(category);
+                
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-category') === category) {
+                        btn.classList.add('active');
+                    }
+                });
+            });
+        }
+    </script>
+    <style>
+        /* Solo estilos para el filtro de búsqueda */
+        .products-search {
+            position: relative;
+            max-width: 500px;
+            margin: 20px auto 30px;
+        }
+        
+        .products-search input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid var(--accent, #D4AF37);
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .products-search input:focus {
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent, #D4AF37);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/" class="logo">
+                <img src="/img/logo.png" alt="AMQ Logo" class="logo-img">
+                <div class="logo-text">ARTES METALICAS DE QUERETARO</div>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            
+            <ul class="nav-main" id="navMain">
+                <li><a href="/" class="nav-link">Inicio</a></li>
+                <li><a href="/products" class="nav-link active">Productos</a></li>
+                <li><a href="/about" class="nav-link">Nosotros</a></li>
+                <li><a href="/contact" class="nav-link">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Productos -->
+    <section class="products-hero">
+        <div class="products-hero-container">
+            <h1 class="products-hero-title">Nuestros Productos</h1>
+            <p class="products-hero-subtitle">Calidad artesanal en cada detalle</p>
+        </div>
+    </section>
+
+    <!-- Sección de Productos -->
+    <section class="products-section">
+        <div class="products-container">
+            <div class="products-header">
+                <h2 class="section-title">Catálogo Completo</h2>
+                <p class="products-description">
+                    Descubre nuestra colección de trofeos, medallas y placas diseñados para reconocer logros 
+                    y celebrar éxitos. Cada pieza es creada con atención al detalle y materiales de la más alta calidad.
+                </p>
+            </div>
+            
+            <div class="category-filter">
+                <button class="category-btn active" data-category="all">Todos</button>
+                <button class="category-btn" data-category="trofeos">Trofeos</button>
+                <button class="category-btn" data-category="medallas">Medallas</button>
+                <button class="category-btn" data-category="placas">Placas</button>
+            </div>
+            
+            <div class="products-grid" id="productsContainer">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+                <div class="loading-products">
+                    <div class="loading-spinner"></div>
+                    <p>Cargando productos...</p>
+                </div>
+            </div>
+            
+            <div class="products-info">
+                <h3>Información importante</h3>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-icon">⏱️</div>
+                        <h4>Tiempos de Entrega</h4>
+                        <p>Fabricación estándar: 5-7 días hábiles<br>Pedidos personalizados: 7-10 días hábiles</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">🎨</div>
+                        <h4>Personalización</h4>
+                        <p>Ofrecemos grabado de nombres, logos, fechas y mensajes personalizados</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">📦</div>
+                        <h4>Envíos</h4>
+                        <p>Realizamos envíos a toda la República Mexicana con seguro incluido</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">💳</div>
+                        <h4>Pagos</h4>
+                        <p>Aceptamos transferencias, depósitos y pagos con tarjeta</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="custom-order-section">
+                <div class="custom-order-content">
+                    <h3>¿No encuentras lo que buscas?</h3>
+                    <p>Podemos crear un diseño completamente personalizado para ti. Contamos con servicio de diseño 
+                    gratuito para que tu idea se convierta en realidad.</p>
+                    <div class="custom-order-buttons">
+                        <a href="/contact" class="btn btn-primary">Solicitar Diseño Personalizado</a>
+                        <a href="https://wa.me/525664099645" class="btn btn-secondary" target="_blank">Consultar por WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>¿Cuál es el mínimo de pedido?</h4>
+                    <p>No tenemos mínimo de pedido. Fabricamos desde una pieza hasta grandes cantidades.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>¿Puedo ver un diseño antes de fabricar?</h4>
+                    <p>Sí, creamos renders digitales para tu aprobación antes de comenzar la fabricación.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>¿Hacen envíos internacionales?</h4>
+                    <p>Actualmente solo realizamos envíos dentro de México.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>¿Qué métodos de pago aceptan?</h4>
+                    <p>Aceptamos transferencias bancarias, depósitos y pagos con tarjeta a través de PayPal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ <!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/img/logo.png" alt="AMQ Logo" class="logo-img">
+                    <div class="footer-logo-text">ARTES METÁLICAS DE QUERÉTARO</div>
+                </div>
+                
+                <div class="footer-contact-info">
+                    <p><strong>📍</strong> Madero 158, Centro, Amealco de Bonfil, Qro.</p>
+                    <p><strong>📞</strong> +52 56 6409 9645</p>
+                    <p><strong>✉️</strong> sacruzruiz@gmail.com</p>
+                </div>
+                 <div class="footer-hours">
+                    <h4>Horario de Atención</h4>
+                    <p>Lunes a Viernes: 9:00 - 18:00</p>
+                    <p>Sábados: 9:00 - 14:00</p>
+                    <p>Domingos: Cerrado</p>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="/">🏠 Inicio</a></li>
+                    <li><a href="/products">📦 Nuestros Productos</a></li>
+                    <li><a href="/about">👥 Conócenos</a></li>
+                    <li><a href="/contact">📞 Contacto</a></li>
+                    <li><a href="https://maps.app.goo.gl/EVTwyMvhwacyumpd8" target="_blank">📍 Ubicación</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contacto Directo</h3>
+                <div class="footer-contact-actions">
+                    <a href="https://wa.me/525664099645?text=Hola%20Artes%20Met%C3%A1licas%20de%20Quer%C3%A9taro,%20me%20gustar%C3%ADa%20contactarlos%20para%20solicitar%20informaci%C3%B3n%20sobre%20sus%20productos%20y%20servicios." class="footer-btn whatsapp" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+                             alt="WhatsApp" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                        WhatsApp Rápido
+                    </a>
+                    <a href="tel:+525664099645" class="footer-btn phone">
+                        <img src="https://cdn-icons-png.flaticon.com/512/126/126341.png" 
+                             alt="Teléfono" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                        Llamar Ahora
+                    </a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sacruzruiz@gmail.com" 
+                       class="footer-btn email" target="_blank">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" 
+                             alt="Email" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                        Enviar Email
+                    </a>
+                    <a href="https://www.facebook.com/artesmetalicasdequeretaro" class="footer-btn facebook" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" 
+                             alt="Facebook" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">
+                        Facebook
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                <p>© 2025 Artes Metálicas de Querétaro. Todos los derechos reservados.</p>
+                <p class="footer-credits">Trofeos, medallas y placas de calidad excepcional</p>
+            </div>
+            
+            <div class="footer-legal">
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Servicio</a>
+                <a href="#">Aviso Legal</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Script específico para el footer de todas las páginas
+    document.addEventListener('DOMContentLoaded', function() {
+        // Función para actualizar enlaces de WhatsApp con parámetro de producto
+        const updateWhatsAppLinks = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productParam = urlParams.get('product');
+            
+            if (productParam) {
+                const whatsappLinks = document.querySelectorAll('.footer a[href*="wa.me"]');
+                whatsappLinks.forEach(link => {
+                    const baseUrl = link.getAttribute('href').split('?')[0];
+                    const defaultMessage = "Hola Artes Metálicas de Querétaro, me gustaría contactarlos para solicitar información sobre sus productos y servicios.";
+                    const fullMessage = `${defaultMessage} Estoy interesado específicamente en: ${encodeURIComponent(productParam)}`;
+                    link.setAttribute('href', `${baseUrl}?text=${encodeURIComponent(fullMessage)}`);
+                });
+            }
+        };
+        
+        // Ejecutar la función
+        updateWhatsAppLinks();
+        
+        // También actualizar si cambia la URL (por si acaso)
+        window.addEventListener('popstate', updateWhatsAppLinks);
+    });
+</script>

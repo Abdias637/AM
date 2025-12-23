@@ -1,0 +1,990 @@
+/* ============================================
+   VARIABLES
+   ============================================ */
+:root {
+    --primary-dark: #0F0F1A;
+    --primary-light: #1A1A2E;
+    --whatsapp-green: #25D366;
+    --facebook-blue: #1877F2;
+    --text-light: #F5F5F5;
+    --text-muted: #A0A0B0;
+    --card-bg: rgba(30, 30, 46, 0.8);
+    --card-border: rgba(212, 175, 55, 0.2);
+}
+
+/* ============================================
+   HERO CONTACTO
+   ============================================ */
+.contact-hero {
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 2rem 4rem;
+    background: linear-gradient(135deg, rgba(15, 15, 26, 0.9) 0%, rgba(26, 26, 46, 0.8) 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(37, 211, 102, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+    z-index: 1;
+}
+
+.contact-hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.contact-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--text-light) 0%, var(--accent-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.contact-hero-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ============================================
+   ESTRUCTURA PRINCIPAL - DISEÑO ASIMÉTRICO
+   ============================================ */
+.contact-main {
+    padding: 2rem 0;
+}
+
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.section-header {
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--whatsapp-green));
+}
+
+.section-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+/* ============================================
+   INFORMACIÓN DE CONTACTO - DISEÑO ASIMÉTRICO
+   ============================================ */
+.contact-info-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, var(--primary-dark) 60%, rgba(26, 26, 46, 0.7) 100%);
+}
+
+.contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+}
+
+.contact-info-card:nth-child(1) {
+    grid-column: 1;
+    transform: translateY(-20px);
+}
+
+.contact-info-card:nth-child(2) {
+    grid-column: 2;
+    transform: translateY(0);
+}
+
+.contact-info-card:nth-child(3) {
+    grid-column: 1;
+    transform: translateY(0);
+}
+
+.contact-info-card:nth-child(4) {
+    grid-column: 2;
+    transform: translateY(20px);
+}
+
+.contact-info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 15px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-info-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    z-index: 10;
+}
+
+.contact-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.contact-info-card h3 {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.contact-text {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.contact-detail {
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.contact-note {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   MAPA Y DIRECCIÓN - DISEÑO ASIMÉTRICO
+   ============================================ */
+.map-section {
+    padding: 5rem 0;
+    background: var(--primary-light);
+    position: relative;
+}
+
+.map-container {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.map-wrapper {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform: rotate(-1deg);
+    transition: transform 0.3s ease;
+}
+
+.map-wrapper iframe {
+    width: 100%;
+    height: 450px;
+    border: none;
+    display: block;
+}
+
+.address-info {
+    padding: 2.5rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    border-left: 5px solid var(--accent);
+    transform: rotate(1deg);
+    margin-top: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.address-info h3 {
+    color: var(--text-light);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.address-info p {
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+}
+
+.address-info strong {
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.address-actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ============================================
+   WHATSAPP SECTION - DISEÑO ASIMÉTRICO
+   ============================================ */
+.whatsapp-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.05) 0%, rgba(15, 15, 26, 0.9) 100%);
+}
+
+.whatsapp-content {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.whatsapp-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.whatsapp-option:first-child {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.1) 0%, rgba(37, 211, 102, 0.2) 100%);
+    border: 2px solid rgba(37, 211, 102, 0.3);
+    transform: translateX(-20px);
+}
+
+.whatsapp-option:last-child {
+    transform: translateX(20px);
+}
+
+.whatsapp-option {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 15px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.whatsapp-option:hover {
+    transform: translateY(-5px) scale(1.03);
+    border-color: var(--whatsapp-green);
+    z-index: 10;
+}
+
+.option-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.whatsapp-option h3 {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.whatsapp-option p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.whatsapp-tips {
+    background: rgba(37, 211, 102, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    border-left: 4px solid var(--whatsapp-green);
+}
+
+.whatsapp-tips h4 {
+    color: var(--whatsapp-green);
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+}
+
+.whatsapp-tips ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.whatsapp-tips li {
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+    padding-left: 1.8rem;
+    position: relative;
+    line-height: 1.6;
+}
+
+.whatsapp-tips li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--whatsapp-green);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.whatsapp-note {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(37, 211, 102, 0.2);
+}
+
+.whatsapp-note p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   REDES SOCIALES - DISEÑO ASIMÉTRICO
+   ============================================ */
+.social-section {
+    padding: 5rem 0;
+    background: var(--primary-dark);
+}
+
+.social-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.social-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 15px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: block;
+}
+
+.social-card:nth-child(1) {
+    transform: rotate(-2deg);
+}
+
+.social-card:nth-child(2) {
+    transform: rotate(1deg);
+}
+
+.social-card:nth-child(3) {
+    transform: rotate(-1deg);
+}
+
+.social-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    text-decoration: none;
+    z-index: 10;
+}
+
+.social-card.facebook:hover {
+    border-color: var(--facebook-blue);
+    box-shadow: 0 15px 30px rgba(24, 119, 242, 0.15);
+}
+
+.social-card.whatsapp:hover {
+    border-color: var(--whatsapp-green);
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.15);
+}
+
+.social-card.email:hover {
+    border-color: var(--accent);
+    box-shadow: 0 15px 30px rgba(212, 175, 55, 0.15);
+}
+
+.social-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.social-card h3 {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.social-card p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.social-action {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.social-card:hover .social-action {
+    background: var(--accent);
+    color: var(--primary-dark);
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    color: var(--primary-dark);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-light);
+    border: 2px solid var(--accent);
+}
+
+.btn-secondary:hover {
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateY(-3px);
+}
+
+.btn-whatsapp {
+    background: linear-gradient(135deg, var(--whatsapp-green) 0%, #128C7E 100%);
+    color: white;
+    border: none;
+}
+
+.btn-whatsapp:hover {
+    background: linear-gradient(135deg, #128C7E 0%, var(--whatsapp-green) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-light);
+    border: 2px solid var(--text-muted);
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   FOOTER - DISEÑO ASIMÉTRICO
+   ============================================ */
+.footer {
+    background: rgba(15, 15, 26, 0.95);
+    padding: 4rem 0 2rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    position: relative;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.footer-content::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.footer-section h3 {
+    color: var(--text-light);
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.footer-logo img {
+    width: 50px;
+    height: 50px;
+}
+
+.footer-logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.footer-description {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.footer-contact-info {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.footer-contact-info p {
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding-left: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-links li a:hover {
+    color: var(--accent);
+    transform: translateX(5px);
+}
+
+.footer-contact-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.footer-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.footer-btn.whatsapp {
+    background: rgba(37, 211, 102, 0.1);
+    color: var(--whatsapp-green);
+    border: 1px solid rgba(37, 211, 102, 0.3);
+}
+
+.footer-btn.whatsapp:hover {
+    background: rgba(37, 211, 102, 0.2);
+    transform: translateY(-2px);
+}
+
+.footer-btn.phone {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.footer-btn.phone:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateY(-2px);
+}
+
+.footer-btn.email {
+    background: rgba(160, 160, 176, 0.1);
+    color: var(--text-light);
+    border: 1px solid rgba(160, 160, 176, 0.3);
+}
+
+.footer-btn.email:hover {
+    background: rgba(160, 160, 176, 0.2);
+    transform: translateY(-2px);
+}
+
+.footer-btn.facebook {
+    background: rgba(24, 119, 242, 0.1);
+    color: var(--facebook-blue);
+    border: 1px solid rgba(24, 119, 242, 0.3);
+}
+
+.footer-btn.facebook:hover {
+    background: rgba(24, 119, 242, 0.2);
+    transform: translateY(-2px);
+}
+
+.footer-hours {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.footer-hours h4 {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.footer-hours p {
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.footer-copyright {
+    margin-bottom: 1rem;
+}
+
+.footer-bottom p {
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.footer-credits {
+    color: var(--text-muted);
+    opacity: 0.7;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.footer-legal {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer-legal a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.3s ease;
+}
+
+.footer-legal a:hover {
+    color: var(--accent);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+    .contact-hero-title {
+        font-size: 3rem;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+    }
+    
+    .contact-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .map-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .whatsapp-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .social-links {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-hero {
+        padding: 7rem 1.5rem 3rem;
+    }
+    
+    .contact-hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .contact-hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .contact-container {
+        padding: 0 1.5rem;
+    }
+    
+    .contact-info-grid {
+        gap: 1.5rem;
+    }
+    
+    .contact-info-card:nth-child(1),
+    .contact-info-card:nth-child(2),
+    .contact-info-card:nth-child(3),
+    .contact-info-card:nth-child(4) {
+        transform: none;
+        grid-column: 1;
+    }
+    
+    .map-wrapper,
+    .address-info {
+        transform: none;
+    }
+    
+    .whatsapp-option:first-child,
+    .whatsapp-option:last-child {
+        transform: none;
+    }
+    
+    .social-links {
+        grid-template-columns: 1fr;
+    }
+    
+    .social-card:nth-child(1),
+    .social-card:nth-child(2),
+    .social-card:nth-child(3) {
+        transform: none;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+    
+    .footer-content::before {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-hero-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .contact-info-card,
+    .whatsapp-option,
+    .social-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .address-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .footer-legal {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+.separator-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 1.5rem auto;
+    width: 80%;
+    max-width: 800px;
+}
+
+.whatsapp-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.whatsapp-left, .whatsapp-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.whatsapp-option {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(37, 211, 102, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(37, 211, 102, 0.3);
+}
+
+.option-header, .tips-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.emoji {
+    font-size: 1.5rem;
+}
+
+.whatsapp-tips {
+    background: rgba(212, 175, 55, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--accent);
+}
+
+.whatsapp-tips h4 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.whatsapp-tips ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.whatsapp-tips li {
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.5;
+}
+
+.whatsapp-tips li:before {
+    content: "•";
+    color: var(--accent);
+    position: absolute;
+    left: 0;
+    font-size: 1.2rem;
+}
+
+.whatsapp-note {
+    padding: 1.5rem;
+    background: rgba(37, 211, 102, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(37, 211, 102, 0.2);
+}
+
+.btn-whatsapp {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--whatsapp-green);
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: none;
+    margin-top: 1rem;
+}
+
+.btn-whatsapp:hover {
+    background: #128c7e;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .whatsapp-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .whatsapp-option, .whatsapp-tips, .whatsapp-note {
+        padding: 1.5rem;
+    }
+}
